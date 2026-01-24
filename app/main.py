@@ -163,15 +163,14 @@ async def summarize_doc():
         full_document_content = parse_file(file_path, current_active_document)
         
         prompt = f"""
-        **Objective:** Provide a concise, comprehensive, and high-quality executive summary of the following document. 
+        **Objective:** Provide a detailed, comprehensive, and high-quality executive summary of the following document. 
         
         **Key Requirements:**
-        1.  **Conciseness:** Aim for a summary that is approximately 300-500 words, unless the document is exceptionally short or long.
-        2.  **Comprehensiveness:** Cover all major sections, themes, and significant findings of the document.
-        3.  **Accuracy:** Ensure all information presented is directly supported by the document's content.
-        4.  **Structure:** Organize the summary with clear headings and bullet points to enhance readability.
-        5.  **Focus:** Highlight key arguments, methodologies (if applicable), results and conclusions. Avoid redundancy.
-        6.  **Audience:** Assume the summary is for a busy professional who needs to quickly grasp the essence of the document.
+        1.  **Comprehensiveness:** Cover all major sections, themes, and significant findings of the document.
+        2.  **Accuracy:** Ensure all information presented is directly supported by the document's content.
+        3.  **Structure:** Organize the summary with clear headings and bullet points to enhance readability.
+        4.  **Focus:** Highlight key arguments, methodologies (if applicable), results and conclusions. Avoid redundancy.
+        5.  **Audience:** Assume the summary is for a busy professional who needs to quickly grasp the essence of the document.
         
         **Document to Summarize:**
         {full_document_content}
