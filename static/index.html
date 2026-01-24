@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local RAG Engine</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔒 Local Privacy RAG</h1>
+            <p>Powered by Llama 3.1 & Qdrant</p>
+        </header>
+
+        <div id="drop-zone" class="upload-box">
+            <p>Drag & Drop PDF/DOCX here</p>
+            <input type="file" id="file-input" hidden>
+        </div>
+        <div id="upload-status" class="status-msg"></div>
+        <div id="active-document-display" class="active-doc-display">
+            Active Document: <span id="active-doc-name">None</span>
+        </div>
+
+        <div id="file-list-container">
+            <h2>Available Files</h2>
+            <div id="file-list"></div>
+        </div>
+
+        <div class="controls">
+            <button onclick="summarizeDoc()" class="btn-secondary">📝 Summarize Document</button>
+            <button onclick="generatePPT()" class="btn-accent">📊 Generate PPT</button>
+            <button onclick="clearChat()" class="btn-danger">🗑️ Clear Chat</button>
+        </div>
+
+        <div class="chat-interface">
+            <div id="chat-history" class="chat-history">
+                </div>
+            <div class="input-area">
+                <input type="text" id="user-query" placeholder="Ask questions about your documents...">
+                <button onclick="sendQuery()" class="btn-primary">Ask</button>
+            </div>
+        </div>
+    </div>
+    <script src="/static/script.js"></script>
+</body>
+</html>
