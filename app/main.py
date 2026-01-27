@@ -22,6 +22,7 @@ llm = LLMEngine()
 
 active_document: str = None
 latest_llm_response_for_ppt: str = None
+ppt_history: list = []
 # Removed latest_llm_response_for_ppt: str = None
 
 
@@ -192,41 +193,62 @@ async def summarize_doc():
 async def generate_ppt():
     try:
         global latest_llm_response_for_ppt
+        global ppt_history
         if not latest_llm_response_for_ppt:
             raise HTTPException(status_code=400, detail="No latest LLM message available to generate PPT. Please query or summarize a document first.")
         
+        # State Capture
+        ppt_history.append(latest_llm_response_for_ppt)
+        
         # JSON Prompt Engineering to convert the latest LLM response into PPT format
         prompt = f"""
-        **Objective:** Generate a detailed content plan for a professional PowerPoint presentation based *solely* on the following LLM response.
+        **Objective:** Map the provided LLM response content into a strict 9-slide PowerPoint structure.
         
-        **Key Requirements:**
-        1.  **Comprehensive Coverage:** Transform the essence of the provided LLM response into presentation slides.
-        2.  **Slide Density:** Each slide should be packed with information, using concise bullet points and clear titles. Aim for a higher information density per slide.
-        3.  **Structure:**
-            *   Start with an introductory slide capturing the main topic.
-            *   Break down the LLM response into logical sections, dedicating separate slides to main concepts, arguments, and supporting details.
-            *   Conclude with a summary or call to action if appropriate.
-        4.  **Content Detail:** For each slide, the "content" array MUST be populated with at least 3-5 highly informative bullet points derived directly from the LLM response. Each bullet point should be a complete thought or piece of data. DO NOT leave the content array empty or with generic placeholders.
-        5.  **Format:** Output *only* a valid JSON object. Do not include any markdown formatting outside the JSON.
+        **Constraint:** You are filling a pre-existing template with exactly 9 content slots. Do not create more slides. Fill the existing ones.
         
-        **JSON Structure:**
+        **Template Structure & Content Requirements:**
+        1.  **Slide 0 (Title Slide):**
+            *   "title": Main Presentation Title
+            *   "subtitle": A brief 1-sentence summary or subtitle.
+        2.  **Slide 1 (Introduction):**
+            *   "title": "Introduction" or similar.
+            *   "content": [List of 3-4 bullet points introducing the topic]
+        3.  **Slide 2 (Key Concept 1):**
+            *   "title": Title of the first main section.
+            *   "content": [List of 3-5 detailed bullet points]
+        4.  **Slide 3 (Key Concept 2):**
+            *   "title": Title of the second main section.
+            *   "content": [List of 3-5 detailed bullet points]
+        5.  **Slide 4 (Key Concept 3):**
+            *   "title": Title of the third main section.
+            *   "content": [List of 3-5 detailed bullet points]
+        6.  **Slide 5 (Deep Dive / Data):**
+            *   "title": Title for a detailed analysis or data section.
+            *   "content": [List of 3-5 detailed bullet points]
+        7.  **Slide 6 (Technology / Methodology):**
+            *   "title": Title regarding methods or tech.
+            *   "content": [List of 3-5 detailed bullet points]
+        8.  **Slide 7 (Security / Risks):**
+            *   "title": Title regarding security, risks, or challenges.
+            *   "content": [List of 3-5 detailed bullet points]
+        9.  **Slide 8 (Conclusion / Impact):**
+            *   "title": "Conclusion" or "Future Impact".
+            *   "content": [List of 3-4 closing thoughts]
+
+        **Format:** Output *only* a valid JSON object.
+        
+        **JSON Output Schema:**
         {{
-            "presentation_title": "Descriptive Title for the Presentation (e.g., 'Summary of [LLM Response Topic]')",
+            "presentation_title": "Filename",
             "slides": [
-                {{
-                    "title": "Concise Slide Title",
-                    "content": [
-                        "Key point 1 (dense and informative, min 3-5 points per slide)",
-                        "Key point 2 (dense and informative)",
-                        "Key point 3 (dense and informative)"
-                    ],
-                    "notes": "Optional speaker notes for this slide (keep concise)"
-                }},
-                // ... more slide objects ...
+                {{ "title": "...", "subtitle": "..." }}, // Slide 0
+                {{ "title": "...", "content": ["Point 1", "Point 2"] }}, // Slide 1
+                {{ "title": "...", "content": ["Point 1", "Point 2"] }}, // Slide 2
+                // ... continue for all 9 slides ...
             ]
         }}
         
-        **LLM Response to be transformed into PPT:**
+        **LLM Response to be transformed:**
         {latest_llm_response_for_ppt}
         """
         
