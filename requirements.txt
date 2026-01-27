@@ -1,2 +1,23 @@
-chromadb
-sentence-transformers
+# Core
+langchain>=0.1.0
+
+# Vector Database
+chromadb>=0.4.0
+
+# Document Processing
+pypdf>=3.10.0
+python-docx>=0.8.11
+python-magic>=0.4.27
+
+# Embeddings
+sentence-transformers>=2.2.2
+
+# Local LLMs (Optional)
+ollama>=0.1.0
+
+# PPT Generation
+python-pptx>=0.6.21
+
+# Utilities
+tqdm>=4.65.0
+numpy>=1.24.0
