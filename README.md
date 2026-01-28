@@ -34,7 +34,7 @@ Designed for **privacy-preserving AI applications**, academic use, and demos.
 | Language | Python |
 | RAG Framework | LangChain |
 | Vector DB | ChromaDB |
-| Embeddings | OpenAI / Sentence Transformers |
+| Embeddings | Sentence Transformers |
 | LLM | LLaMA / Ollama |
 | PPT Generation | python-pptx |
 | UI | HTML / CSS / JS |
